@@ -5,6 +5,11 @@
   "repository": "git@github.com:ecarlste/bt-equipment-service.git",
   "author": "Erik S. Carlsten <ecarlste@gmail.com>",
   "license": "GPL",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "concurrently \"tsc --watch\" \"nodemon -q dist/index.js\""
+  },
   "dependencies": {
     "dotenv": "^16.0.1",
     "express": "^4.18.1"
