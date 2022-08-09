@@ -1,13 +1,13 @@
 {
   "name": "bt-equipment-service",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.ts",
   "repository": "git@github.com:ecarlste/bt-equipment-service.git",
   "author": "Erik S. Carlsten <ecarlste@gmail.com>",
   "license": "GPL-3.0",
   "scripts": {
-    "start": "ts-node index.ts",
-    "dev": "nodemon index.ts",
+    "start": "ts-node app.ts",
+    "dev": "nodemon app.ts",
     "lint": "eslint . --ext .ts",
     "format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
