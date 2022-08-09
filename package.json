@@ -6,10 +6,8 @@
   "author": "Erik S. Carlsten <ecarlste@gmail.com>",
   "license": "GPL-3.0",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
-    "serve": "nodemon index.ts"
+    "start": "ts-node index.ts",
+    "dev": "nodemon index.ts"
   },
   "dependencies": {
     "dotenv": "^16.0.1",
