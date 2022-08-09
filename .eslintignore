@@ -1,0 +1,5 @@
+# ignore eslint config since it uses a module def
+.eslintrc.cjs
+
+# ignore dist folder since there are tons of generated js files
+dist
