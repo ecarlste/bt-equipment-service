@@ -1,10 +1,14 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import { db } from './config/db';
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
+
+const uri = process.env.MONGODB_CONNECTION_STRING as string;
+db.connect(uri);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');
