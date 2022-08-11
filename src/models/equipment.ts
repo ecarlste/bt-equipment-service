@@ -1,7 +1,51 @@
-export default class Equipment {
-  constructor(public name: string) {}
+import { Document, Schema, model } from 'mongoose';
 
-  hasNameLongerThan(length: number) {
-    return this.name.length > length;
-  }
+export interface IEquipment extends Document {
+  name: string;
+  heat: number;
+  damage: number;
+  minimumRange?: number;
+  shortRange: number;
+  mediumRange: number;
+  longRange: number;
+  weight: number;
+  criticalSlots: number;
 }
+
+const EquipmentSchema = new Schema<IEquipment>({
+  name: {
+    type: String,
+    required: true
+  },
+  heat: {
+    type: Number,
+    required: true
+  },
+  damage: {
+    type: Number,
+    required: true
+  },
+  minimumRange: Number,
+  shortRange: {
+    type: Number,
+    required: true
+  },
+  mediumRange: {
+    type: Number,
+    required: true
+  },
+  longRange: {
+    type: Number,
+    required: true
+  },
+  weight: {
+    type: Number,
+    required: true
+  },
+  criticalSlots: {
+    type: Number,
+    required: true
+  }
+});
+
+export const EquipmentModel = model<IEquipment>('Equipment', EquipmentSchema);

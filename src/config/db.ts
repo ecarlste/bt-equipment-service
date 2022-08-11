@@ -7,13 +7,9 @@ export class db {
   static async setUp(): Promise<void> {
     const node_env = process.env.NODE_ENV;
 
-    if (node_env == 'dev') {
-      console.log('Setting up MongoDB locally with an in memory server...');
-
+    if (node_env == 'dev' || node_env == 'test') {
       await db.connectToInMemoryDb();
     } else {
-      console.log(`Setting up MongoDB to talk to a remote server based on the NODE_ENV: '${node_env}'`);
-
       await db.connectToRemoteDb();
     }
   }
@@ -34,10 +30,28 @@ export class db {
   private static async connectToMongoDb(uri: string) {
     try {
       await mongoose.connect(uri);
-      console.log('MongoDB is connected...');
     } catch (error: unknown) {
       console.error(error);
       console.error('MongoDB failed to connect...');
+    }
+  }
+
+  static async dropDatabase() {
+    if (db.mongo) {
+      await mongoose.connection.dropDatabase();
+      await mongoose.connection.close();
+      await db.mongo.stop();
+    }
+  }
+
+  static async dropCollections() {
+    if (db.mongo) {
+      const collections = mongoose.connection.collections;
+
+      for (const key in collections) {
+        const collection = collections[key];
+        await collection.deleteMany({});
+      }
     }
   }
 }
