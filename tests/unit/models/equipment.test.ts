@@ -119,3 +119,20 @@ describe('findByIdAndUpdate', () => {
     expect(updatedEquipment?.name).toBe(equipmentData.name);
   });
 });
+
+describe('deleteOne', () => {
+  it('should delete an equipment entry when provided a valid Id', async () => {
+    const equipment = new EquipmentModel(equipmentData);
+    const savedEquipment = await equipment.save();
+
+    const deletedEquipment = await EquipmentModel.deleteOne({ _id: savedEquipment.id });
+
+    expect(deletedEquipment.deletedCount).toBe(1);
+  });
+
+  it("should fail when trying to delete equipment by Id that doesn't exist", async () => {
+    const deletedEquipment = await EquipmentModel.deleteOne({ _id: '62f57df82a9e88018ddb63f9' });
+
+    expect(deletedEquipment.deletedCount).toBe(0);
+  });
+});
