@@ -67,3 +67,21 @@ describe('findById', () => {
     expect(foundEquipment).toBeNull();
   });
 });
+
+describe('find', () => {
+  it('should return all documents that match query when multiple exist', async () => {
+    const equipment1 = new EquipmentModel(equipmentData);
+    const equipment2 = new EquipmentModel(equipmentData);
+    await Promise.all([equipment1.save(), equipment2.save()]);
+
+    const foundEquipment = await EquipmentModel.find({});
+
+    expect(foundEquipment.length).toBe(2);
+  });
+
+  it('should return empty when no documents match query', async () => {
+    const foundEquipment = await EquipmentModel.find({});
+
+    expect(foundEquipment).toStrictEqual([]);
+  });
+});
