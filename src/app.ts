@@ -8,8 +8,7 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
 
-const uri = process.env.MONGODB_CONNECTION_STRING as string;
-db.connect(uri);
+db.setUp();
 
 app.use(express.json());
 app.use('/', equipment);
