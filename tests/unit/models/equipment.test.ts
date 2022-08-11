@@ -50,3 +50,20 @@ describe('create', () => {
     expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
   });
 });
+
+describe('findById', () => {
+  it('should successfully find an item by id when it exists', async () => {
+    const equipment = new EquipmentModel(equipmentData);
+    const savedEquipment = await equipment.save();
+
+    const foundEquipment = await EquipmentModel.findById(savedEquipment._id);
+
+    expect(foundEquipment?.name).toBe(equipmentData.name);
+  });
+
+  it("should find nothing when using an id that doesn't exist", async () => {
+    const foundEquipment = await EquipmentModel.findById('62f57df82a9e88018ddb63f9');
+
+    expect(foundEquipment).toBeNull();
+  });
+});
