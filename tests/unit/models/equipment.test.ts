@@ -85,3 +85,37 @@ describe('find', () => {
     expect(foundEquipment).toStrictEqual([]);
   });
 });
+
+describe('findByIdAndUpdate', () => {
+  it('should return updated equipment when an existing id is passed', async () => {
+    const equipment = new EquipmentModel(equipmentData);
+    const savedEquipment = await equipment.save();
+    const updatedCriticalSlots = 2;
+
+    const updatedEquipment = await EquipmentModel.findByIdAndUpdate(
+      savedEquipment.id,
+      {
+        criticalSlots: updatedCriticalSlots
+      },
+      { returnDocument: 'after' }
+    );
+
+    expect(updatedEquipment?.criticalSlots).toBe(updatedCriticalSlots);
+  });
+
+  it('should not change fields that are not provided in the update object', async () => {
+    const equipment = new EquipmentModel(equipmentData);
+    const savedEquipment = await equipment.save();
+    const updatedCriticalSlots = 2;
+
+    const updatedEquipment = await EquipmentModel.findByIdAndUpdate(
+      savedEquipment.id,
+      {
+        criticalSlots: updatedCriticalSlots
+      },
+      { returnDocument: 'after' }
+    );
+
+    expect(updatedEquipment?.name).toBe(equipmentData.name);
+  });
+});
