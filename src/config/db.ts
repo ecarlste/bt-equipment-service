@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-
+import config from '.';
 export class db {
   private static mongo: MongoMemoryServer;
 
@@ -22,9 +22,7 @@ export class db {
   }
 
   private static async connectToRemoteDb() {
-    const uri = process.env.MONGODB_CONNECTION_STRING as string;
-
-    await db.connectToMongoDb(uri);
+    await db.connectToMongoDb(config.databaseUri);
   }
 
   private static async connectToMongoDb(uri: string) {
