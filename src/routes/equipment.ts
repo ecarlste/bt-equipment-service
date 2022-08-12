@@ -1,27 +1,37 @@
 import express from 'express';
+import EquipmentService from '../services/equipment';
 
 const router = express.Router();
+const equipmentService = new EquipmentService();
 
-router.get('/', (req, res) => {
-  res.send('This endpoint lists all equipment');
+router.get('/', async (req, res) => {
+  const equipmentList = await equipmentService.getEquipment();
+
+  res.send(equipmentList);
 });
 
-router.get('/:id', (req, res) => {
-  res.send(`This endpoint will get an equipment entry by id: '${req.params.id}'`);
+router.get('/:id', async (req, res) => {
+  const equipment = await equipmentService.getEquipmentById(req.params.id);
+
+  res.send(equipment);
 });
 
-router.post('/', (req, res) => {
-  res.send(`This endpoint will create a new equipment entry using this data: ${JSON.stringify(req.body)}`);
+router.post('/', async (req, res) => {
+  const equipment = await equipmentService.createEquipment(req.body);
+
+  res.send(equipment);
 });
 
-router.put('/:id', (req, res) => {
-  res.send(
-    `This endpoint will updated the equipment entry with id: '${req.params.id}' with data: ${JSON.stringify(req.body)}`
-  );
+router.put('/:id', async (req, res) => {
+  const equipment = await equipmentService.updateEquipmentById(req.params.id, req.body);
+
+  res.send(equipment);
 });
 
-router.delete('/:id', (req, res) => {
-  res.send(`This endpoint will delete the equipment entry with id: '${req.params.id}'`);
+router.delete('/:id', async (req, res) => {
+  const equipment = await equipmentService.deleteEquipmentById(req.params.id);
+
+  res.send(equipment);
 });
 
 export default router;
