@@ -1,7 +1,7 @@
 import express, { Express } from 'express';
-import { db } from './config/db';
-import equipment from './routes/equipment';
-import config from './config';
+import { db } from '@/config/db';
+import equipment from '@/routes/equipment';
+import config from '@/config';
 
 const app: Express = express();
 

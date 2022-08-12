@@ -1,8 +1,6 @@
-// import Equipment from '../../../src/models/equipment';
-
 import mongoose from 'mongoose';
-import { db } from '../../../src/config/db';
-import { EquipmentModel } from '../../../src/models/equipment';
+import { db } from '@/config/db';
+import { EquipmentModel } from '@/models/equipment';
 
 const equipmentData = {
   name: 'Autocannon/2',

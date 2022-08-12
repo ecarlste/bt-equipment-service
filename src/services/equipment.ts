@@ -1,5 +1,5 @@
 import { UpdateQuery } from 'mongoose';
-import { EquipmentModel, IEquipment } from '../models/equipment';
+import { EquipmentModel, IEquipment } from '@/models/equipment';
 
 export default class EquipmentService {
   async createEquipment(equipment: IEquipment): Promise<IEquipment> {

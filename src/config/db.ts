@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import config from '.';
+import config from '@/config';
 export class db {
   private static mongo: MongoMemoryServer;
 
   static async setUp(): Promise<void> {
     const node_env = process.env.NODE_ENV;
 
-    if (node_env == 'dev' || node_env == 'test') {
+    if (node_env == 'development' || node_env == 'test') {
       await db.connectToInMemoryDb();
     } else {
       await db.connectToRemoteDb();
