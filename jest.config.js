@@ -5,5 +5,6 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
   preset: 'ts-jest',
-  testEnvironment: 'node'
+  testEnvironment: 'node',
+  modulePathIgnorePatterns: ['<rootDir>/dist']
 };
