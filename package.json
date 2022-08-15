@@ -6,6 +6,7 @@
   "author": "Erik S. Carlsten <ecarlste@gmail.com>",
   "license": "GPL-3.0",
   "scripts": {
+    "build": "tsc",
     "start": "nodemon",
     "test": "jest",
     "test:watch": "jest --watch",
