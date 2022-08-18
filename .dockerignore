@@ -1,0 +1,20 @@
+# files related to the Git repo
+.git
+
+# ignore node deps dir
+node_modules
+
+# code coverage output
+coverage
+
+# unit testing junit report files
+reports
+
+# local env files
+.env
+
+# transpiled code
+dist
+
+# test code
+tests
