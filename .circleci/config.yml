@@ -25,13 +25,15 @@ jobs:
             - .yarn/unplugged
       - run:
           name: 'JavaScript Test Suite'
-          command: yarn test --ci --testResultsProcessor="jest-junit"
+          command: yarn test --ci --testResultsProcessor="jest-junit" --coverage
           environment:
             JEST_JUNIT_OUTPUT: 'reports/junit/js-test-results.xml'
       - store_test_results:
           path: reports/junit
       - store_artifacts:
           path: reports/junit
+      - store_artifacts:
+          path: coverage
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
