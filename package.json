@@ -7,11 +7,14 @@
   "license": "GPL-3.0",
   "scripts": {
     "build": "tsc",
-    "start": "nodemon",
+    "start": "ts-node src/app.ts",
+    "dev": "nodemon",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint . --ext .ts",
-    "format": "prettier --config .prettierrc 'src/**/*.ts' --write"
+    "format": "prettier --config .prettierrc 'src/**/*.ts' --write",
+    "docker:build": "docker build . -t ecarlste/battletech-equipment-service",
+    "docker:run": "docker run -e NODE_ENV=development -p 8081:8080 -d ecarlste/battletech-equipment-service"
   },
   "dependencies": {
     "dotenv": "^16.0.1",
