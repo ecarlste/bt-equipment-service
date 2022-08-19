@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { db } from '../../../src/config/db';
+import { db } from '../../inMemoryDb';
 import { EquipmentModel } from '../../../src/models/equipment';
 
 const equipmentData = {
