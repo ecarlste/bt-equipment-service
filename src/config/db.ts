@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import config from '@/config';
+import config from '.';
 export class db {
   private static mongo: MongoMemoryServer;
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import EquipmentService from '@/services/equipment';
+import EquipmentService from '../services/equipment';
 
 const router = express.Router();
 const equipmentService = new EquipmentService();
