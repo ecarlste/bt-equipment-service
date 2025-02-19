@@ -13,7 +13,7 @@ import { sql } from "drizzle-orm";
 const techRatingEnumValues = Object.values(TechRating) as [string, ...string[]];
 export const techRatingEnum = pgEnum("tech_rating", techRatingEnumValues);
 
-export const weapons = pgTable("", {
+export const weapons = pgTable("weapon", {
   id: uuid().primaryKey().defaultRandom(),
   name: text().unique().notNull(),
   heat: text().notNull(),
