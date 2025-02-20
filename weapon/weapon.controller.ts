@@ -1,48 +1,31 @@
 import { api } from "encore.dev/api";
-import { eq } from "drizzle-orm";
-import { db } from "./database";
-import { weapons } from "./schema";
 import { CreateWeaponDto, WeaponResponse } from "./weapon.interface";
+import WeaponService from "./weapon.service";
 
 export const create = api(
   { expose: true, method: "POST", path: "/weapon" },
   async (data: CreateWeaponDto): Promise<WeaponResponse> => {
-    const [weapon] = await db.insert(weapons).values(data).returning();
-
-    return { result: weapon };
+    return WeaponService.create(data);
   }
 );
 
-export const get = api(
+export const readOne = api(
   { expose: true, method: "GET", path: "/weapon/:id" },
   async ({ id }: { id: string }): Promise<WeaponResponse> => {
-    const [weapon] = await db
-      .select()
-      .from(weapons)
-      .where(eq(weapons.id, id))
-      .limit(1);
-
-    return { result: weapon };
+    return WeaponService.findOne({ id });
   }
 );
 
-export const list = api(
+export const read = api(
   { expose: true, method: "GET", path: "/weapon" },
   async (): Promise<WeaponResponse> => {
-    const weaponList = await db.select().from(weapons);
-
-    return { result: weaponList };
+    return WeaponService.find();
   }
 );
 
-export const remove = api(
+export const destroy = api(
   { expose: true, method: "DELETE", path: "/weapon/:id" },
   async ({ id }: { id: string }): Promise<WeaponResponse> => {
-    const [weapon] = await db
-      .delete(weapons)
-      .where(eq(weapons.id, id))
-      .returning();
-
-    return { result: weapon };
+    return WeaponService.delete({ id });
   }
 );

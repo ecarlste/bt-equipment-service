@@ -1,5 +1,5 @@
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
-import { create, get, list, remove } from "./weapon.controller";
+import { create, readOne, read, destroy } from "./weapon.controller";
 import { CreateWeaponDto, WeaponDto } from "./weapon.interface";
 import { TechRating } from "../lib/TechRating";
 import { db } from "./database";
@@ -51,7 +51,7 @@ describe("weapon", () => {
     it("should return the weapon found by id", async () => {
       const [weapon] = await db.insert(weapons).values(weaponToGet).returning();
 
-      const weaponFound = await get({ id: weapon.id });
+      const weaponFound = await readOne({ id: weapon.id });
 
       expect(weaponFound.result).toMatchObject(weapon);
     });
@@ -65,7 +65,7 @@ describe("weapon", () => {
       ];
       await db.insert(weapons).values(weaponsToList).returning();
 
-      const weaponsFound = await list();
+      const weaponsFound = await read();
 
       expect(weaponsFound.result).toMatchObject(weaponsToList);
     });
@@ -75,16 +75,16 @@ describe("weapon", () => {
     it("should delete the weapon found by id", async () => {
       const [weapon] = await db.insert(weapons).values(weaponToGet).returning();
 
-      await remove({ id: weapon.id });
+      await destroy({ id: weapon.id });
 
-      const weaponsFound = await list();
+      const weaponsFound = await read();
       expect(weaponsFound.result).toEqual([]);
     });
 
     it("should return the weapon deleted", async () => {
       const [weapon] = await db.insert(weapons).values(weaponToGet).returning();
 
-      const weaponDeleted = await remove({ id: weapon.id });
+      const weaponDeleted = await destroy({ id: weapon.id });
 
       expect(weaponDeleted.result).toMatchObject(weapon);
     });
