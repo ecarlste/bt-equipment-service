@@ -1,5 +1,5 @@
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
-import { create, readOne, read, destroy } from "./weapon.controller";
+import { create, readOne, read, destroy, update } from "./weapon.controller";
 import { CreateWeaponDto, WeaponDto } from "./weapon.interface";
 import { TechRating } from "../lib/TechRating";
 import { db } from "./database";
@@ -47,7 +47,7 @@ describe("weapon", () => {
     });
   });
 
-  describe("get", () => {
+  describe("readOne", () => {
     it("should return the weapon found by id", async () => {
       const [weapon] = await db.insert(weapons).values(weaponToGet).returning();
 
@@ -57,7 +57,7 @@ describe("weapon", () => {
     });
   });
 
-  describe("list", () => {
+  describe("read", () => {
     it("should return all weapons", async () => {
       const weaponsToList: CreateWeaponDto[] = [
         { ...defaultTestWeapon, name: "Weapon List Test 1" },
@@ -71,7 +71,27 @@ describe("weapon", () => {
     });
   });
 
-  describe("delete", () => {
+  describe("update", () => {
+    it("should return the weapon updated", async () => {
+      const [weapon] = await db.insert(weapons).values(weaponToGet).returning();
+      const updatedData = { name: "Weapon Update Test" };
+      const weaponUpdated = (await update({
+        id: weapon.id,
+        data: updatedData,
+      })) as { result: WeaponDto };
+
+      expect({
+        ...weaponUpdated.result,
+        updatedAt: undefined,
+      }).toMatchObject({
+        ...weapon,
+        updatedAt: undefined,
+        ...updatedData,
+      });
+    });
+  });
+
+  describe("destroy", () => {
     it("should delete the weapon found by id", async () => {
       const [weapon] = await db.insert(weapons).values(weaponToGet).returning();
 

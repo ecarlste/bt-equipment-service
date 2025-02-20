@@ -11,6 +11,7 @@ export type WeaponDto = {
 };
 
 export type CreateWeaponDto = Omit<WeaponDto, "id">;
+export type UpdateWeaponDto = Partial<CreateWeaponDto>;
 
 export interface WeaponResponse {
   success?: boolean;

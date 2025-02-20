@@ -1,5 +1,9 @@
 import { api } from "encore.dev/api";
-import { CreateWeaponDto, WeaponResponse } from "./weapon.interface";
+import {
+  CreateWeaponDto,
+  UpdateWeaponDto,
+  WeaponResponse,
+} from "./weapon.interface";
 import WeaponService from "./weapon.service";
 
 export const create = api(
@@ -12,7 +16,7 @@ export const create = api(
 export const readOne = api(
   { expose: true, method: "GET", path: "/weapon/:id" },
   async ({ id }: { id: string }): Promise<WeaponResponse> => {
-    return WeaponService.findOne({ id });
+    return WeaponService.findOne(id);
   }
 );
 
@@ -23,9 +27,22 @@ export const read = api(
   }
 );
 
+export const update = api(
+  { expose: true, method: "PUT", path: "/weapon/:id" },
+  async ({
+    id,
+    data,
+  }: {
+    id: string;
+    data: UpdateWeaponDto;
+  }): Promise<WeaponResponse> => {
+    return WeaponService.update(id, data);
+  }
+);
+
 export const destroy = api(
   { expose: true, method: "DELETE", path: "/weapon/:id" },
   async ({ id }: { id: string }): Promise<WeaponResponse> => {
-    return WeaponService.delete({ id });
+    return WeaponService.delete(id);
   }
 );

@@ -1,7 +1,11 @@
 import { db } from "./database";
 import { eq } from "drizzle-orm";
 import { weapons } from "./schema";
-import { CreateWeaponDto, WeaponResponse } from "./weapon.interface";
+import {
+  CreateWeaponDto,
+  UpdateWeaponDto,
+  WeaponResponse,
+} from "./weapon.interface";
 
 const WeaponService = {
   create: async (data: CreateWeaponDto): Promise<WeaponResponse> => {
@@ -22,7 +26,7 @@ const WeaponService = {
     };
   },
 
-  findOne: async ({ id }: { id: string }): Promise<WeaponResponse> => {
+  findOne: async (id: string): Promise<WeaponResponse> => {
     const [weapon] = await db
       .select()
       .from(weapons)
@@ -42,7 +46,30 @@ const WeaponService = {
     };
   },
 
-  delete: async ({ id }: { id: string }): Promise<WeaponResponse> => {
+  update: async (
+    id: string,
+    data: UpdateWeaponDto
+  ): Promise<WeaponResponse> => {
+    const [updateWeapon] = await db
+      .update(weapons)
+      .set(data)
+      .where(eq(weapons.id, id))
+      .returning();
+
+    if (!updateWeapon) {
+      return {
+        success: false,
+        message: "Weapon not found",
+      };
+    }
+
+    return {
+      success: true,
+      result: updateWeapon,
+    };
+  },
+
+  delete: async (id: string): Promise<WeaponResponse> => {
     const [weapon] = await db
       .delete(weapons)
       .where(eq(weapons.id, id))
