@@ -7,13 +7,21 @@ const WeaponService = {
   create: async (data: CreateWeaponDto): Promise<WeaponResponse> => {
     const [weapon] = await db.insert(weapons).values(data).returning();
 
-    return { result: weapon };
+    return {
+      success: true,
+      result: weapon,
+    };
   },
+
   find: async (): Promise<WeaponResponse> => {
     const weaponList = await db.select().from(weapons);
 
-    return { result: weaponList };
+    return {
+      success: true,
+      result: weaponList,
+    };
   },
+
   findOne: async ({ id }: { id: string }): Promise<WeaponResponse> => {
     const [weapon] = await db
       .select()
@@ -21,15 +29,36 @@ const WeaponService = {
       .where(eq(weapons.id, id))
       .limit(1);
 
-    return { result: weapon };
+    if (!weapon) {
+      return {
+        success: false,
+        message: "Weapon not found",
+      };
+    }
+
+    return {
+      success: true,
+      result: weapon,
+    };
   },
+
   delete: async ({ id }: { id: string }): Promise<WeaponResponse> => {
     const [weapon] = await db
       .delete(weapons)
       .where(eq(weapons.id, id))
       .returning();
 
-    return { result: weapon };
+    if (!weapon) {
+      return {
+        success: false,
+        message: "Weapon not found",
+      };
+    }
+
+    return {
+      success: true,
+      result: weapon,
+    };
   },
 };
 

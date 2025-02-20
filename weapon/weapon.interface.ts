@@ -13,5 +13,7 @@ export type WeaponDto = {
 export type CreateWeaponDto = Omit<WeaponDto, "id">;
 
 export interface WeaponResponse {
-  result: WeaponDto | WeaponDto[];
+  success?: boolean;
+  message?: string;
+  result?: WeaponDto | WeaponDto[];
 }
