@@ -4,4 +4,4 @@ import { Service } from "encore.dev/service";
 // https://encore.dev/docs/ts/primitives/services
 
 // weapon service responds to requests with information on BattleTech weapons.
-export default new Service("weapon");
+export default new Service("weapons");
