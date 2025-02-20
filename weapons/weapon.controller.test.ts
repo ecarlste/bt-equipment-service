@@ -31,7 +31,7 @@ describe("weapon", () => {
         ...defaultTestWeapon,
         name: "Weapon Create Test",
       };
-      const weaponCreated = await create(weaponToCreate);
+      const weaponCreated = await create({ data: weaponToCreate });
 
       const { id } = weaponCreated.result as WeaponDto;
       expect(weaponCreated.result).toMatchObject({
