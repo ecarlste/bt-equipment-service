@@ -23,7 +23,7 @@ export const readOne = api(
     try {
       return await WeaponService.findOne(id);
     } catch (error) {
-      throw APIError.aborted(error?.toString() || "Error getting weapons data");
+      throw APIError.aborted(error?.toString() || "Error getting weapon by ID");
     }
   }
 );
@@ -34,7 +34,7 @@ export const read = api(
     try {
       return await WeaponService.find();
     } catch (error) {
-      throw APIError.aborted(error?.toString() || "Error getting weapon data");
+      throw APIError.aborted(error?.toString() || "Error getting weapons data");
     }
   }
 );
