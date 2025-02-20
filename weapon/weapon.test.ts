@@ -6,8 +6,10 @@ describe("get", () => {
     const resp = await get({ id: "fake-weapon-id" });
 
     expect(resp).toStrictEqual({
-      id: "fake-weapon-id",
-      ...defaultWeapon,
+      result: {
+        id: "fake-weapon-id",
+        ...defaultWeapon,
+      },
     });
   });
 });
