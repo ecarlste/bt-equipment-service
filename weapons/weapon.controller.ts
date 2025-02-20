@@ -1,68 +1,45 @@
 import { api, APIError } from "encore.dev/api";
 import {
-  CreateWeaponDto,
-  UpdateWeaponDto,
+  ReadOneWeaponRequest,
   WeaponResponse,
+  UpdateWeaponRequest,
+  DestroyWeaponRequest,
+  CreateWeaponRequest,
 } from "./weapon.interface";
 import WeaponService from "./weapon.service";
+import { withErrorHandling } from "../lib/error-handling";
 
-export const create = api(
+export const create = api<CreateWeaponRequest, WeaponResponse>(
   { expose: true, method: "POST", path: "/weapons" },
-  async (data: CreateWeaponDto): Promise<WeaponResponse> => {
-    try {
-      return await WeaponService.create(data);
-    } catch (error) {
-      throw APIError.aborted(error?.toString() || "Error creating weapon");
-    }
-  }
+  withErrorHandling("creating weapon", async (req) => {
+    return await WeaponService.create(req.data);
+  })
 );
 
-export const readOne = api(
+export const readOne = api<ReadOneWeaponRequest, WeaponResponse>(
   { expose: true, method: "GET", path: "/weapons/:id" },
-  async ({ id }: { id: string }): Promise<WeaponResponse> => {
-    try {
-      return await WeaponService.findOne(id);
-    } catch (error) {
-      throw APIError.aborted(error?.toString() || "Error getting weapon by ID");
-    }
-  }
+  withErrorHandling("getting weapon by ID", async (req) => {
+    return await WeaponService.findOne(req.id);
+  })
 );
 
-export const read = api(
+export const read = api<void, WeaponResponse>(
   { expose: true, method: "GET", path: "/weapons" },
-  async (): Promise<WeaponResponse> => {
-    try {
-      return await WeaponService.find();
-    } catch (error) {
-      throw APIError.aborted(error?.toString() || "Error getting weapons data");
-    }
-  }
+  withErrorHandling("getting weapons data", async () => {
+    return await WeaponService.find();
+  })
 );
 
-export const update = api(
+export const update = api<UpdateWeaponRequest, WeaponResponse>(
   { expose: true, method: "PUT", path: "/weapons/:id" },
-  async ({
-    id,
-    data,
-  }: {
-    id: string;
-    data: UpdateWeaponDto;
-  }): Promise<WeaponResponse> => {
-    try {
-      return await WeaponService.update(id, data);
-    } catch (error) {
-      throw APIError.aborted(error?.toString() || "Error updating weapon");
-    }
-  }
+  withErrorHandling("updating weapon", async (req) => {
+    return await WeaponService.update(req.id, req.data);
+  })
 );
 
-export const destroy = api(
+export const destroy = api<DestroyWeaponRequest, WeaponResponse>(
   { expose: true, method: "DELETE", path: "/weapons/:id" },
-  async ({ id }: { id: string }): Promise<WeaponResponse> => {
-    try {
-      return await WeaponService.delete(id);
-    } catch (error) {
-      throw APIError.aborted(error?.toString() || "Error deleting weapon");
-    }
-  }
+  withErrorHandling("deleting weapon", async (req) => {
+    return await WeaponService.delete(req.id);
+  })
 );
