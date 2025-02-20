@@ -21,7 +21,7 @@ export const readOne = api(
   { expose: true, method: "GET", path: "/weapons/:id" },
   async ({ id }: { id: string }): Promise<WeaponResponse> => {
     try {
-      return WeaponService.findOne(id);
+      return await WeaponService.findOne(id);
     } catch (error) {
       throw APIError.aborted(error?.toString() || "Error getting weapons data");
     }
