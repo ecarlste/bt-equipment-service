@@ -16,16 +16,6 @@ const defaultTestWeapon: CreateWeaponDto = {
   techRating: TechRating.CommonTech,
 };
 
-const weaponToGet: CreateWeaponDto = {
-  ...defaultTestWeapon,
-  name: "Weapon Get Test",
-};
-
-const weaponToCreate: CreateWeaponDto = {
-  ...defaultTestWeapon,
-  name: "Weapon Create Test",
-};
-
 describe("weapon", () => {
   beforeAll(async () => {
     await db.delete(weapons);
@@ -37,6 +27,10 @@ describe("weapon", () => {
 
   describe("create", () => {
     it("should return the weapon created with an id", async () => {
+      const weaponToCreate: CreateWeaponDto = {
+        ...defaultTestWeapon,
+        name: "Weapon Create Test",
+      };
       const weaponCreated = await create(weaponToCreate);
 
       const { id } = weaponCreated.result as WeaponDto;
@@ -49,6 +43,10 @@ describe("weapon", () => {
 
   describe("readOne", () => {
     it("should return the weapon found by id", async () => {
+      const weaponToGet: CreateWeaponDto = {
+        ...defaultTestWeapon,
+        name: "Weapon Get Test",
+      };
       const [weapon] = await db.insert(weapons).values(weaponToGet).returning();
 
       const weaponFound = await readOne({ id: weapon.id });
@@ -73,8 +71,11 @@ describe("weapon", () => {
 
   describe("update", () => {
     it("should return the weapon updated", async () => {
-      const [weapon] = await db.insert(weapons).values(weaponToGet).returning();
-      const updatedData = { name: "Weapon Update Test" };
+      const [weapon] = await db
+        .insert(weapons)
+        .values(defaultTestWeapon)
+        .returning();
+      const updatedData = { name: defaultTestWeapon.name + " Updated" };
       const weaponUpdated = (await update({
         id: weapon.id,
         data: updatedData,
@@ -93,7 +94,10 @@ describe("weapon", () => {
 
   describe("destroy", () => {
     it("should delete the weapon found by id", async () => {
-      const [weapon] = await db.insert(weapons).values(weaponToGet).returning();
+      const [weapon] = await db
+        .insert(weapons)
+        .values(defaultTestWeapon)
+        .returning();
 
       await destroy({ id: weapon.id });
 
@@ -102,7 +106,10 @@ describe("weapon", () => {
     });
 
     it("should return the weapon deleted", async () => {
-      const [weapon] = await db.insert(weapons).values(weaponToGet).returning();
+      const [weapon] = await db
+        .insert(weapons)
+        .values(defaultTestWeapon)
+        .returning();
 
       const weaponDeleted = await destroy({ id: weapon.id });
 
