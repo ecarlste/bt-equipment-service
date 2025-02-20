@@ -1,5 +1,5 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
-import { create, get, list, remove } from "./weapon";
+import { afterEach, beforeAll, describe, expect, it } from "vitest";
+import { create, get, list, remove } from "./weapon.controller";
 import { CreateWeaponDto, WeaponDto } from "./weapon.interface";
 import { TechRating } from "../lib/TechRating";
 import { db } from "./database";
