@@ -32,7 +32,7 @@ export const read = api(
   { expose: true, method: "GET", path: "/weapons" },
   async (): Promise<WeaponResponse> => {
     try {
-      return WeaponService.find();
+      return await WeaponService.find();
     } catch (error) {
       throw APIError.aborted(error?.toString() || "Error getting weapon data");
     }
@@ -49,7 +49,7 @@ export const update = api(
     data: UpdateWeaponDto;
   }): Promise<WeaponResponse> => {
     try {
-      return WeaponService.update(id, data);
+      return await WeaponService.update(id, data);
     } catch (error) {
       throw APIError.aborted(error?.toString() || "Error updating weapon");
     }
@@ -60,7 +60,7 @@ export const destroy = api(
   { expose: true, method: "DELETE", path: "/weapons/:id" },
   async ({ id }: { id: string }): Promise<WeaponResponse> => {
     try {
-      return WeaponService.delete(id);
+      return await WeaponService.delete(id);
     } catch (error) {
       throw APIError.aborted(error?.toString() || "Error deleting weapon");
     }
