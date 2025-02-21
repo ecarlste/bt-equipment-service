@@ -9,6 +9,9 @@ on:
 
   workflow_dispatch: # Allows manual trigger from GitHub Actions UI
 
+env:
+  MANUAL_BUMP: false
+
 jobs:
   publish:
     name: Publish to npm
@@ -43,8 +46,6 @@ jobs:
 
           if [ "$PREV_VERSION" != "$CURR_VERSION" ]; then
             echo "MANUAL_BUMP=true" >> $GITHUB_ENV
-          else
-            echo "MANUAL_BUMP=false" >> $GITHUB_ENV
           fi
 
       - name: Bump Patch Version If No Manual Bump
@@ -60,6 +61,7 @@ jobs:
 
       - name: Get Version to Publish
         run: echo "UPDATED_VERSION=$(jq -r .version client-packages/weapons/package.json)" >> $GITHUB_ENV
+
       - name: Publish to npm
         run: npm publish --access public
         working-directory: client-packages/weapons
