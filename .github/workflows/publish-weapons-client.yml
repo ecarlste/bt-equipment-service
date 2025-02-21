@@ -19,6 +19,7 @@ jobs:
 
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout Repository
@@ -46,28 +47,48 @@ jobs:
           echo "Current Version: $CURR_VERSION"
 
           if [ "$PREV_VERSION" != "$CURR_VERSION" ]; then
+            UPDATED_VERSION=$(jq -r .version client-packages/weapons/package.json)
+            echo "UPDATED_VERSION=$UPDATED_VERSION" >> $GITHUB_ENV
             echo "MANUAL_BUMP=true" >> $GITHUB_ENV
+          else
+            echo "MANUAL_BUMP=false" >> $GITHUB_ENV
           fi
 
-      - name: Bump Patch Version If No Manual Bump
+      - name: Bump Patch Version (auto bump only)
         if: env.MANUAL_BUMP == 'false'
         run: |
           npm version patch --no-git-tag-version
+
+          UPDATED_VERSION=$(jq -r .version client-packages/weapons/package.json)
+          echo "UPDATED_VERSION=$UPDATED_VERSION" >> $GITHUB_ENV
+
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
           git add package.json
-          git commit -m "chore: bump weapons client patch version"
-          git push origin main
+          git commit -m "chore: bump weapons client to $UPDATED_VERSION"
+          git push --set-upstream origin "github-actions-bot/bump-weapons-client-$UPDATED_VERSION"
         working-directory: client-packages/weapons
 
-      - name: Get Version to Publish
-        run: echo "UPDATED_VERSION=$(jq -r .version client-packages/weapons/package.json)" >> $GITHUB_ENV
+      - name: Create PR for Bumped Version (auto bump only)
+        id: cpr
+        if: env.MANUAL_BUMP == 'false'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "chore: bump weapons client to $UPDATED_VERSION"
+          body: "Automated version bump for weapons client package to version $UPDATED_VERSION"
+          branch: "github-actions-bot/bump-weapons-client-$UPDATED_VERSION"
+          base: "main"
+
+      - name: Set auto merge for PR (auto bump only)
+        if: env.MANUAL_BUMP == 'false'
+        run: gh pr merge --auto ${{ steps.cpr.outputs.pull-request-number }}
 
       - name: Publish to npm
-        run: npm publish --access public
+        run: |
+          'echo "Publishing version $UPDATED_VERSION to npm"'
+          npm publish --access public
         working-directory: client-packages/weapons
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Verify Published Version
-        run: 'echo "Published Version: $UPDATED_VERSION"'
