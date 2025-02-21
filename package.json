@@ -1,12 +1,14 @@
 {
-  "name": "encore-ts-starter",
+  "name": "bt-equipment-service",
   "private": true,
   "version": "0.0.1",
-  "description": "Encore Typescript Starter",
+  "description": "BattleTech Equipment Service",
   "license": "MPL-2.0",
   "type": "module",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "generate-client:staging": "encore gen client bt-equipment-service-5kr2 --output=./client-packages/weapons/client.ts --env=staging",
+    "generate-client:local": "encore gen client bt-equipment-service-5kr2 --output=./client-packages/weapons/client.ts --env=local"  
   },
   "devDependencies": {
     "@types/node": "^20.5.7",

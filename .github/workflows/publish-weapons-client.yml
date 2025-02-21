@@ -1,0 +1,39 @@
+name: Publish Weapons API Client to npm
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "client-packages/weapons/**"
+
+  workflow_dispatch: # Allows manual trigger from GitHub Actions UI
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.14.0
+          registry-url: "https://registry.npmjs.org/"
+
+      - name: Install Dependencies
+        run: npm ci
+        working-directory: client-packages/weapons
+
+      - name: Bump Version (Patch)
+        run: npm version patch --no-git-tag-version
+        working-directory: client-packages/weapons
+
+      - name: Publish to npm
+        run: npm publish --access public
+        working-directory: client-packages/weapons
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
