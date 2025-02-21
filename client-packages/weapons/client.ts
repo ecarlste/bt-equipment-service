@@ -11,7 +11,8 @@
 export type BaseURL = string;
 
 export const Local: BaseURL = "http://localhost:4000";
-export const someFakeVariable = "for testing the CI workflow only";
+export const someFakeVariable =
+  "for testing the CI workflow only, remove in follow up PR";
 
 /**
  * Environment returns a BaseURL for calling the cloud environment with the given name.
