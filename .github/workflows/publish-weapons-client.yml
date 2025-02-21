@@ -59,8 +59,7 @@ jobs:
         working-directory: client-packages/weapons
 
       - name: Get Version to Publish
-        run: echo "UPDATED_VERSION=$(jq -r .version client-packages/weapons/package.json)"
-
+        run: echo "UPDATED_VERSION=$(jq -r .version client-packages/weapons/package.json)" >> $GITHUB_ENV
       - name: Publish to npm
         run: npm publish --access public
         working-directory: client-packages/weapons
