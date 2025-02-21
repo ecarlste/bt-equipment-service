@@ -38,6 +38,7 @@ jobs:
       - name: Detect Manual Version Bump
         id: check_manual_bump
         run: |
+          set -e
           PREV_VERSION=$(git show HEAD~1:client-packages/weapons/package.json | jq -r .version)
           CURR_VERSION=$(jq -r .version client-packages/weapons/package.json)
 
