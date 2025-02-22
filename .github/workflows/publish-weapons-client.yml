@@ -67,7 +67,7 @@ jobs:
 
           git add package.json
           git commit -m "chore: bump weapons client to $UPDATED_VERSION"
-          git push --set-upstream origin "github-actions-bot/bump-weapons-client-$UPDATED_VERSION"
+          git push origin main:"github-actions-bot/bump-weapons-client-$UPDATED_VERSION"
         working-directory: client-packages/weapons
 
       - name: Create PR for Bumped Version (auto bump only)
