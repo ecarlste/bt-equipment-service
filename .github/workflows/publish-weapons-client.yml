@@ -90,7 +90,7 @@ jobs:
 
       - name: Publish to npm
         run: |
-          'echo "Publishing version $UPDATED_VERSION to npm"'
+          echo "Publishing version $UPDATED_VERSION to npm"
           npm publish --access public
         working-directory: client-packages/weapons
         env:
