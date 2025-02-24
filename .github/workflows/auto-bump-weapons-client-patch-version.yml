@@ -12,6 +12,7 @@ on:
 env:
   MANUAL_BUMP: false
   UPDATED_VERSION: ""
+  GH_APP_TOKEN: ""
 
 jobs:
   publish:
@@ -26,7 +27,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GH_APP_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -78,14 +79,31 @@ jobs:
         if: env.MANUAL_BUMP == 'false'
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.GH_APP_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           title: "chore: bump weapons client to ${{ env.UPDATED_VERSION }}"
           body: "Automated version bump for weapons client package to version ${{ env.UPDATED_VERSION }}"
           branch: "github-actions-bot/bump-weapons-client-${{ env.UPDATED_VERSION }}"
           base: "main"
 
+      - name: Generate JWT for GitHub App (auto bump only)
+        if: env.MANUAL_BUMP == 'false'
+        run: |
+          export GH_APP_JWT=$(bin/generate-jwt.bash ${{ secrets.GH_APP_CLIENT_ID }} "${{ secrets.GH_APP_PRIVATE_KEY }}")
+          echo "::add-mask::$GH_APP_JWT"
+          echo "GH_APP_JWT=$GH_APP_JWT" >> $GITHUB_ENV
+
+      - name: Request GitHub App Installation Token (auto bump only)
+        run: |
+          RESPONSE=$(curl -s -X POST "https://api.github.com/app/installations/${{ vars.GH_APP_INSTALLATION_ID }}/access_tokens" \
+            -H "Authorization: Bearer $GH_APP_JWT" \
+            -H "Accept: application/vnd.github.v3+json")
+
+          TOKEN=$(echo "$RESPONSE" | jq -r '.token')
+          echo "::add-mask::$TOKEN"
+          echo "GH_APP_TOKEN=$TOKEN" >> $GITHUB_ENV
+
       - name: Set auto merge for PR (auto bump only)
         if: env.MANUAL_BUMP == 'false'
         run: gh pr merge --auto --squash ${{ steps.cpr.outputs.pull-request-number }}
         env:
-          GH_TOKEN: ${{ secrets.GH_APP_TOKEN }}
+          GH_TOKEN: ${{ env.GH_APP_TOKEN }}
