@@ -26,7 +26,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_APP_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -78,7 +78,7 @@ jobs:
         if: env.MANUAL_BUMP == 'false'
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_APP_TOKEN }}
           title: "chore: bump weapons client to ${{ env.UPDATED_VERSION }}"
           body: "Automated version bump for weapons client package to version ${{ env.UPDATED_VERSION }}"
           branch: "github-actions-bot/bump-weapons-client-${{ env.UPDATED_VERSION }}"
@@ -86,9 +86,6 @@ jobs:
 
       - name: Set auto merge for PR (auto bump only)
         if: env.MANUAL_BUMP == 'false'
-        run: |
-          cat package.json
-
-          gh pr merge --auto --squash ${{ steps.cpr.outputs.pull-request-number }}
+        run: gh pr merge --auto --squash ${{ steps.cpr.outputs.pull-request-number }}
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_APP_TOKEN }}
