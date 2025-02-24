@@ -102,6 +102,6 @@ jobs:
 
       - name: Set auto merge for PR (auto bump only)
         if: env.MANUAL_BUMP == 'false'
-        run: gh pr merge --auto --squash ${{ steps.cpr.outputs.pull-request-number }}
+        run: gh pr merge --auto --admin --squash ${{ steps.cpr.outputs.pull-request-number }}
         env:
           GH_TOKEN: ${{ env.GH_APP_TOKEN }}
