@@ -69,6 +69,8 @@ jobs:
           git add package.json
           git commit -m "chore: bump weapons client to $UPDATED_VERSION"
           git push origin main:"github-actions-bot/bump-weapons-client-$UPDATED_VERSION"
+
+          cat package.json
         working-directory: client-packages/weapons
 
       - name: Create PR for Bumped Version (auto bump only)
@@ -84,13 +86,19 @@ jobs:
 
       - name: Set auto merge for PR (auto bump only)
         if: env.MANUAL_BUMP == 'false'
-        run: gh pr merge --auto --squash ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          cat package.json
+
+          gh pr merge --auto --squash ${{ steps.cpr.outputs.pull-request-number }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to npm
         run: |
           echo "Publishing version $UPDATED_VERSION to npm"
+
+          cat package.json
+
           npm publish --access public
         working-directory: client-packages/weapons
         env:
