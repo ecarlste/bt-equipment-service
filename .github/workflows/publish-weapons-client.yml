@@ -11,6 +11,7 @@ on:
 
 env:
   MANUAL_BUMP: false
+  UPDATED_VERSION: ""
 
 jobs:
   publish:
@@ -76,9 +77,9 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          title: "chore: bump weapons client to $UPDATED_VERSION"
-          body: "Automated version bump for weapons client package to version $UPDATED_VERSION"
-          branch: "github-actions-bot/bump-weapons-client-$UPDATED_VERSION"
+          title: "chore: bump weapons client to ${{ env.UPDATED_VERSION }}"
+          body: "Automated version bump for weapons client package to version ${{ env.UPDATED_VERSION }}"
+          branch: "github-actions-bot/bump-weapons-client-${{ env.UPDATED_VERSION }}"
           base: "main"
 
       - name: Set auto merge for PR (auto bump only)
