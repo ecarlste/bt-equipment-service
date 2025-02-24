@@ -5,28 +5,20 @@ on:
     branches:
       - main
     paths:
-      - "client-packages/weapons/client.ts"
+      - "client-packages/weapons/package.json"
 
   workflow_dispatch: # Allows manual trigger from GitHub Actions UI
-
-env:
-  MANUAL_BUMP: false
-  UPDATED_VERSION: ""
 
 jobs:
   publish:
     name: Publish to npm
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-      pull-requests: write
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        # with:
+        #   token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -34,71 +26,10 @@ jobs:
           node-version: 22.14.0
           registry-url: "https://registry.npmjs.org/"
 
-      - name: Fetch Latest Commit History
-        run: git fetch --depth=2 # Get the last 2 commits for comparison
-
-      - name: Detect Manual Version Bump
-        id: check_manual_bump
-        run: |
-          set -e
-          PREV_VERSION=$(git show HEAD~1:client-packages/weapons/package.json | jq -r .version)
-          CURR_VERSION=$(jq -r .version client-packages/weapons/package.json)
-
-          echo "Previous Version: $PREV_VERSION"
-          echo "Current Version: $CURR_VERSION"
-
-          if [ "$PREV_VERSION" != "$CURR_VERSION" ]; then
-            UPDATED_VERSION=$(jq -r .version client-packages/weapons/package.json)
-            echo "UPDATED_VERSION=$UPDATED_VERSION" >> $GITHUB_ENV
-            echo "MANUAL_BUMP=true" >> $GITHUB_ENV
-          else
-            echo "MANUAL_BUMP=false" >> $GITHUB_ENV
-          fi
-
-      - name: Bump Patch Version (auto bump only)
-        if: env.MANUAL_BUMP == 'false'
-        run: |
-          npm version patch --no-git-tag-version
-
-          UPDATED_VERSION=$(jq -r .version package.json)
-          echo "UPDATED_VERSION=$UPDATED_VERSION" >> $GITHUB_ENV
-
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          git add package.json
-          git commit -m "chore: bump weapons client to $UPDATED_VERSION"
-          git push origin main:"github-actions-bot/bump-weapons-client-$UPDATED_VERSION"
-
-          cat package.json
-        working-directory: client-packages/weapons
-
-      - name: Create PR for Bumped Version (auto bump only)
-        id: cpr
-        if: env.MANUAL_BUMP == 'false'
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: "chore: bump weapons client to ${{ env.UPDATED_VERSION }}"
-          body: "Automated version bump for weapons client package to version ${{ env.UPDATED_VERSION }}"
-          branch: "github-actions-bot/bump-weapons-client-${{ env.UPDATED_VERSION }}"
-          base: "main"
-
-      - name: Set auto merge for PR (auto bump only)
-        if: env.MANUAL_BUMP == 'false'
-        run: |
-          cat package.json
-
-          gh pr merge --auto --squash ${{ steps.cpr.outputs.pull-request-number }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Publish to npm
         run: |
-          echo "Publishing version $UPDATED_VERSION to npm"
-
-          cat package.json
-
+          CURR_VERSION=$(jq -r .version client-packages/weapons/package.json)
+          echo "Publishing version $CURR_VERSION to npm"
           npm publish --access public
         working-directory: client-packages/weapons
         env:
