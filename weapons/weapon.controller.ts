@@ -5,6 +5,7 @@ import {
   UpdateWeaponRequest,
   DestroyWeaponRequest,
   CreateWeaponRequest,
+  CreateManyWeaponsRequest,
 } from "./weapon.interface";
 import WeaponService from "./weapon.service";
 import { withErrorHandling } from "../lib/error-handling";
@@ -13,6 +14,13 @@ export const create = api<CreateWeaponRequest, WeaponResponse>(
   { expose: true, method: "POST", path: "/weapons" },
   withErrorHandling("creating weapon", async (req) => {
     return await WeaponService.create(req.data);
+  })
+);
+
+export const createMany = api<CreateManyWeaponsRequest, WeaponResponse>(
+  { expose: true, method: "POST", path: "/weapons/many" },
+  withErrorHandling("creating many weapons", async (req) => {
+    return await WeaponService.createMany(req.data);
   })
 );
 
