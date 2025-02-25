@@ -11,7 +11,7 @@
 export type BaseURL = string;
 
 export const Local: BaseURL = "http://localhost:4000";
-export const someFakeVariable11 =
+export const someFakeVariable12 =
   "for testing the CI workflow only, remove in follow up PR";
 
 /**
