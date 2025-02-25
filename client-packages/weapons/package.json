@@ -1,6 +1,6 @@
 {
-    "name": "bt-weapons-client",
-    "version": "0.0.1",
+    "name": "bt-weapons-client-ts",
+    "version": "0.0.2",
     "description": "Generated API client for the BattleTech Weapons Service",
     "main": "client.ts",
     "repository": {
