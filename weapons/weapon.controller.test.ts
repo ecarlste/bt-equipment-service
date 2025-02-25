@@ -1,5 +1,12 @@
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
-import { create, readOne, read, destroy, update } from "./weapon.controller";
+import {
+  create,
+  readOne,
+  read,
+  destroy,
+  update,
+  createMany,
+} from "./weapon.controller";
 import { CreateWeaponDto, WeaponDto } from "./weapon.interface";
 import { TechRating } from "../lib/TechRating";
 import { db } from "./database";
@@ -37,6 +44,34 @@ describe("weapon", () => {
       expect(weaponCreated.result).toMatchObject({
         id,
         ...weaponToCreate,
+      });
+    });
+  });
+
+  describe("createMany", () => {
+    it("should return the weapons created with an id", async () => {
+      const weaponToCreate1: CreateWeaponDto = {
+        ...defaultTestWeapon,
+        name: "Weapon Create Many Test 1",
+      };
+      const weaponToCreate2: CreateWeaponDto = {
+        ...defaultTestWeapon,
+        name: "Weapon Create Many Test 2",
+      };
+      const weaponsToCreate: CreateWeaponDto[] = [
+        weaponToCreate1,
+        weaponToCreate2,
+      ];
+
+      const weaponsCreated = await createMany({ data: weaponsToCreate });
+      const weaponsCreatedData = weaponsCreated.result as WeaponDto[];
+
+      expect(weaponsCreatedData).toHaveLength(weaponsToCreate.length);
+      weaponsCreatedData.forEach((weaponCreated, index) => {
+        expect(weaponCreated).toMatchObject({
+          ...weaponsToCreate[index],
+          id: expect.any(String),
+        });
       });
     });
   });

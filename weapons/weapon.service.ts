@@ -17,6 +17,15 @@ const WeaponService = {
     };
   },
 
+  createMany: async (data: CreateWeaponDto[]): Promise<WeaponResponse> => {
+    const weaponsCreated = await db.insert(weapons).values(data).returning();
+
+    return {
+      success: true,
+      result: weaponsCreated,
+    };
+  },
+
   find: async (): Promise<WeaponResponse> => {
     const weaponList = await db.select().from(weapons);
 

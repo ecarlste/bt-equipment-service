@@ -14,6 +14,7 @@ export type CreateWeaponDto = Omit<WeaponDto, "id">;
 export type UpdateWeaponDto = Partial<CreateWeaponDto>;
 
 export type CreateWeaponRequest = { data: CreateWeaponDto };
+export type CreateManyWeaponsRequest = { data: CreateWeaponDto[] };
 export type ReadOneWeaponRequest = { id: string };
 export type UpdateWeaponRequest = { id: string; data: UpdateWeaponDto };
 export type DestroyWeaponRequest = { id: string };
