@@ -1,10 +1,13 @@
 {
   "name": "bt-equipment-service",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "BattleTech Equipment Service",
   "license": "MPL-2.0",
   "type": "module",
+  "workspaces": [
+    "client-packages/*"
+  ],
   "scripts": {
     "test": "vitest",
     "generate-client:staging": "encore gen client bt-equipment-service-5kr2 --output=./client-packages/weapons/client.ts --env=staging",
@@ -13,7 +16,7 @@
   "devDependencies": {
     "@types/node": "^20.5.7",
     "drizzle-kit": "^0.30.4",
-    "typescript": "^5.2.2",
+    "typescript": "^5.7.3",
     "vitest": "^1.5.0"
   },
   "dependencies": {
