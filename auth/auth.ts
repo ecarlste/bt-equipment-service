@@ -4,11 +4,11 @@ import { AuthData, AuthParams } from "./auth.interface";
 import { APIError, Gateway } from "encore.dev/api";
 import log from "encore.dev/log";
 
-const apiKey = secret("ApiKey");
+const apiKey = secret("BtMechlabApiKey");
+const apiUserId = secret("BtMechlabApiUserId");
 
 export const auth = authHandler(
   async (params: AuthParams): Promise<AuthData> => {
-    log.info("Verifying API key...");
     const token = params.authorization.replace("Bearer ", "");
 
     if (!token) {
@@ -17,7 +17,7 @@ export const auth = authHandler(
 
     if (token === apiKey()) {
       return {
-        userID: "bt-mechlab",
+        userID: apiUserId(),
       };
     } else {
       log.error("Unable to verify API key!");
