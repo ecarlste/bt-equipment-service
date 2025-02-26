@@ -8,7 +8,7 @@
   "scripts": {
     "test": "vitest",
     "generate-client:staging": "encore gen client bt-equipment-service-5kr2 --output=./client-packages/weapons/client.ts --env=staging",
-    "generate-client:local": "encore gen client bt-equipment-service-5kr2 --output=./client-packages/weapons/client.ts --env=local"  
+    "generate-client:local": "encore gen client bt-equipment-service-5kr2 --output=./client-packages/weapons/client.ts --env=local"
   },
   "devDependencies": {
     "@types/node": "^20.5.7",
