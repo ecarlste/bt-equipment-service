@@ -38,6 +38,17 @@ export interface ClientOptions {
     requestInit?: Omit<RequestInit, "headers"> & {
         headers?: Record<string, string>;
     };
+    /**
+     * Allows you to set the authentication data to be used for each
+     * request either by passing in a static object or by passing in
+     * a function which returns a new object for each request.
+     */
+    auth?: auth.AuthParams | AuthDataGenerator;
+}
+export declare namespace auth {
+    interface AuthParams {
+        authorization: string;
+    }
 }
 export declare namespace weapons {
     interface CreateManyWeaponsRequest {
@@ -52,6 +63,7 @@ export declare namespace weapons {
         weight: number;
         criticalSlots: number;
         techRating: string;
+        weaponType: lib.WeaponTypeEnum | null;
     }
     interface CreateWeaponRequest {
         data: CreateWeaponDto;
@@ -65,6 +77,7 @@ export declare namespace weapons {
         weight?: number;
         criticalSlots?: number;
         techRating?: string;
+        weaponType?: lib.WeaponTypeEnum | null;
     }
     interface UpdateWeaponRequest {
         data: UpdateWeaponDto;
@@ -79,6 +92,7 @@ export declare namespace weapons {
         weight: number;
         criticalSlots: number;
         techRating: string;
+        weaponType: lib.WeaponTypeEnum | null;
     }
     interface WeaponResponse {
         success?: boolean;
@@ -95,6 +109,9 @@ export declare namespace weapons {
         readOne(id: string): Promise<WeaponResponse>;
         update(id: string, params: UpdateWeaponRequest): Promise<WeaponResponse>;
     }
+}
+export declare namespace lib {
+    type WeaponTypeEnum = "ballistic" | "energy" | "missile";
 }
 declare class WebSocketConnection {
     ws: WebSocket;
@@ -137,6 +154,7 @@ type CallParameters = Omit<RequestInit, "method" | "body" | "headers"> & {
     /** Query parameters to be sent with the request */
     query?: Record<string, string | string[]>;
 };
+export type AuthDataGenerator = () => auth.AuthParams | Promise<auth.AuthParams | undefined> | undefined;
 export type Fetcher = typeof fetch;
 declare class BaseClient {
     readonly baseURL: string;
@@ -145,6 +163,7 @@ declare class BaseClient {
     readonly requestInit: Omit<RequestInit, "headers"> & {
         headers?: Record<string, string>;
     };
+    readonly authGenerator?: AuthDataGenerator;
     constructor(baseURL: string, options: ClientOptions);
     getAuthData(): Promise<CallParameters | undefined>;
     createStreamInOut<Request, Response>(path: string, params?: CallParameters): Promise<StreamInOut<Request, Response>>;

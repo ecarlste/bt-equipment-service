@@ -1,3 +1,5 @@
+import { WeaponTypeEnum } from "../lib/weapon-type";
+
 export type WeaponDto = {
   id: string;
   name: string;
@@ -8,6 +10,7 @@ export type WeaponDto = {
   weight: number;
   criticalSlots: number;
   techRating: string;
+  weaponType: WeaponTypeEnum | null;
 };
 
 export type CreateWeaponDto = Omit<WeaponDto, "id">;

@@ -8,6 +8,13 @@
       "when": 1740010096509,
       "tag": "0000_deep_madripoor",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1740688158813,
+      "tag": "0001_lush_giant_girl",
+      "breakpoints": true
     }
   ]
 }

@@ -8,7 +8,7 @@ import {
   createMany,
 } from "./weapon.controller";
 import { CreateWeaponDto, WeaponDto } from "./weapon.interface";
-import { TechRating } from "../lib/TechRating";
+import { TechRating } from "../lib/tech-rating";
 import { db } from "./database";
 import { weapons } from "./schema";
 
@@ -21,6 +21,7 @@ const defaultTestWeapon: CreateWeaponDto = {
   weight: 1,
   criticalSlots: 1,
   techRating: TechRating.CommonTech,
+  weaponType: null,
 };
 
 describe("weapon", () => {
