@@ -11,7 +11,9 @@
   "scripts": {
     "test": "vitest",
     "generate-client:staging": "encore gen client bt-equipment-service-5kr2 --output=./client-packages/weapons/client.ts --env=staging",
-    "generate-client:local": "encore gen client bt-equipment-service-5kr2 --output=./client-packages/weapons/client.ts --env=local"
+    "generate-client:local": "encore gen client bt-equipment-service-5kr2 --output=./client-packages/weapons/client.ts --env=local",
+    "db:studio": "drizzle-kit studio --config=weapons/drizzle-local.config.ts",
+    "db:generate-weapons": "drizzle-kit generate --config=weapons/drizzle.config.ts"
   },
   "devDependencies": {
     "@types/node": "^20.5.7",
